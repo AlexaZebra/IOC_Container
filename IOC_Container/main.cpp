@@ -1,4 +1,12 @@
 #include "IOC_Contaner.h"
+#include <iostream>
+
+
+using namespace std;
+
+// инициализируем ненулевым числом
+int IOCContainer::s_nextTypeId = 115094801;
+
 
 int main(int argc, const char *argv[])
 {
