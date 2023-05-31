@@ -16,25 +16,25 @@ int main()
 {
     //------Example #1----------------
 
-    IOCContainer injector;
+    IOCContainer injector; // создаем объект контейнер
 
     // Регистрируем IProcessor с классом IntelProcessor, т.о. каждый раз запрашивая IProcessor получаем объект IntelProcessor.
     injector.RegisterInstance<IProcessor, IntelProcessor>();
-    auto intel = injector.GetObject<IProcessor>();
-    intel->setProcessor("intel 3",x64,5.0);
+    auto intel = injector.GetObject<IProcessor>();      // получили процессор через иок контейнер
+    intel->setProcessor("intel i3 3470", x64, 3.6);     // установили в него параметры
 
-    Computer computerWithIntel(intel.get());
+    Computer computerWithIntel(intel);                  // создали объект компьютер и установили в него процессор интел
 
-    cout << computerWithIntel.getProcessor() << endl;
+    cout << computerWithIntel.getProcessor() << endl;   // вывели информацию о процессоре
 
 
     //------Example #2----------------
 
     injector.RegisterInstance<IProcessor, AMDProcessor>();
     auto amd = injector.GetObject<IProcessor>();
-    amd->setProcessor("ryzen 3",x86,3.8);
+    amd->setProcessor("ryzen 5 2600", x86, 3.9);
 
-    Computer computerWithAMD(amd.get());
+    Computer computerWithAMD(amd);
 
     cout << computerWithAMD.getProcessor() << endl;
 

@@ -17,10 +17,10 @@ public:
      }
 
      IntelProcessor() = default;
-     ~IntelProcessor() override{};
+     ~IntelProcessor() override{std::cout<<"destructor intel"<< std::endl;};
 
     std::string getProcessorInfo() override{
-        return "Processor Intel version: " + Version + ", type:  " + std::to_string(Type) + ", speed: " + std::to_string(Speed);
+        return "Processor Intel version: " + Version + ", type:  x" + std::to_string(Type) + ", speed: " + std::to_string(Speed);
     }
 
  };

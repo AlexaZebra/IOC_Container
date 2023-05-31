@@ -17,10 +17,10 @@ public:
      }
 
      AMDProcessor() = default;
-     ~AMDProcessor() override{};
+     ~AMDProcessor() override{ std::cout<<"destructor amd"<< std::endl;};
 
     std::string getProcessorInfo() override{
-        return "Processor AMD version: " + Version + ", type:  " + std::to_string(Type) + ", speed: " + std::to_string(Speed);
+        return "Processor AMD version: " + Version + ", type:  x" + std::to_string(Type) + ", speed: " + std::to_string(Speed);
     }
 
  };
