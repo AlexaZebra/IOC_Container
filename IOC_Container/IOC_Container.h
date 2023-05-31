@@ -7,8 +7,13 @@ using namespace std;
 
 class IOCContainer
 {
-	static int s_nextTypeId;
-	template<typename T>
+    static int s_nextTypeId; //Объявление статической переменной s_nextTypeId,
+                             //которая будет использоваться для генерации уникальных идентификаторов типов в контейнере.
+
+//Определение шаблонной функции GetTypeID, которая принимает тип T в качестве параметра и возвращает уникальный идентификатор типа.
+//Эта функция использует статическую локальную переменную typeId, которая инкрементируется при каждом вызове
+//и хранит уникальный идентификатор для каждого типа.
+    template<typename T>
 	static int GetTypeID() {
 		static int typeId = s_nextTypeId++;
 		return typeId;
@@ -41,22 +46,25 @@ public:
 		virtual ~FactoryRoot() {}
 	};
 
-
+//Объявление контейнера m_factories, который будет использоваться для хранения зарегистрированных фабрик.
 	std::map<int, std::shared_ptr<FactoryRoot>> m_factories;
 
 	//Получить экземпляр объекта
 	template<typename T>
 	class CFactory : public FactoryRoot
 	{
+//Объявление переменной m_functor типа function, которая представляет функциональный объект,
+//способный создавать и возвращать объект типа T. Этот объект будет храниться внутри фабрики.
 		std::function<std::shared_ptr<T>()> m_functor;
 
 	public:
 		~CFactory() {}
-
+//Конструктор, который принимает функциональный объект functor в качестве параметра
+//и инициализирует переменную m_functor с переданным значением.
 		CFactory(std::function<std::shared_ptr<T>()> functor)
-			: m_functor(functor)
-		{}
-
+			: m_functor(functor){}
+//Метод GetObject(), который вызывает функциональный объект m_functor и возвращает результат
+//в виде совместно используемого указателя. Этот метод будет использоваться для получения объекта типа T из фабрики.
 		std::shared_ptr<T> GetObject() {
 			return m_functor();
 		}
@@ -112,74 +120,5 @@ public:
 	}
 };
 
-IOCContainer gContainer;
 
-// инициализируем ненулевым числом
-int IOCContainer::s_nextTypeId = 115094801;
 
-class IAmAThing
-{
-public:
-	virtual ~IAmAThing() {}
-	virtual void TestThis() = 0;
-};
-
-class IAmTheOtherThing
-{
-public:
-	virtual ~IAmTheOtherThing() {}
-	virtual void TheOtherTest() = 0;
-};
-
-class TheThing : public IAmAThing
-{
-public:
-	TheThing() {}
-	void TestThis() {
-		std::cout << "A Thing" << std::endl;
-	}
-};
-
-class TheOtherThing : public IAmTheOtherThing
-{
-	std::shared_ptr<IAmAThing> m_thing;
-	string m_superInfo;
-
-public:
-	TheOtherThing(std::shared_ptr<IAmAThing> thing)
-		: m_thing(thing) {
-		m_superInfo = "From TheOtherThing";
-	}
-	TheOtherThing(std::shared_ptr<IAmAThing> thing, string sInfo)
-		: m_thing(thing)
-		, m_superInfo(sInfo) {
-		m_superInfo = sInfo;
-	}
-	void TheOtherTest() {
-		std::cout << m_superInfo << std::endl;
-		m_thing->TestThis();
-	}
-};
-
-class IHello
-{
-public:
-	virtual void hello() const = 0;
-	virtual ~IHello() = default;
-};
-
-class Hello : public IHello
-{
-public:
-	virtual void hello() const {
-		std::cout << "hello world!" << std::endl;
-	}
-};
-
-class Privet : public IHello
-{
-public:
-	virtual void hello() const {
-		std::cout << "Privet world!" << std::endl;
-	}
-};

@@ -1,39 +1,42 @@
-#include "IOC_Contaner.h"
+#include "IOC_Container.h"
+#include"Processor.h"
+#include"Computer.h"
+#include"AMDProcessor.h"
+#include"IntelProcessor.h"
 #include <iostream>
 
 
 using namespace std;
+IOCContainer injector;
 
 // инициализируем ненулевым числом
 int IOCContainer::s_nextTypeId = 115094801;
 
-
-int main(int argc, const char *argv[])
+int main()
 {
     //------Example #1----------------
-    //Injector injector;
+
     IOCContainer injector;
 
-    // Регистрируем IHello с классом Hello, т.о. каждый раз запрашивая IHell получаем объект Hello.
-    injector.RegisterInstance<IHello, Hello>();
-    auto helloInstance = injector.GetObject<IHello>();
-    helloInstance->hello();
-    injector.RegisterInstance<IHello, Privet>();
+    // Регистрируем IProcessor с классом IntelProcessor, т.о. каждый раз запрашивая IProcessor получаем объект IntelProcessor.
+    injector.RegisterInstance<IProcessor, IntelProcessor>();
+    auto intel = injector.GetObject<IProcessor>();
+    intel->setProcessor("intel 3",x64,5.0);
 
-    //Здесь, после регистрации получим объект Privet
-    helloInstance = injector.GetObject<IHello>();
-    helloInstance->hello();
+    Computer computerWithIntel(intel.get());
+
+    cout << computerWithIntel.getProcessor() << endl;
+
 
     //------Example #2----------------
 
-    gContainer.RegisterInstance<IAmAThing, TheThing>();
-    gContainer.RegisterFactory<IAmTheOtherThing, TheOtherThing, IAmAThing>();
+    injector.RegisterInstance<IProcessor, AMDProcessor>();
+    auto amd = injector.GetObject<IProcessor>();
+    amd->setProcessor("ryzen 3",x86,3.8);
 
-    gContainer.GetObject<IAmAThing>()->TestThis();
-    gContainer.GetObject<IAmTheOtherThing>()->TheOtherTest();
+    Computer computerWithAMD(amd.get());
 
-    //Опять запршиваем объект,после последней регистрации получим объект Privet
-    helloInstance = injector.GetObject<IHello>();
-    helloInstance->hello();
+    cout << computerWithAMD.getProcessor() << endl;
+
     return 0;
 }

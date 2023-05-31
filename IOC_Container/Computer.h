@@ -1,20 +1,26 @@
 #ifndef COMPUTER_H
 #define COMPUTER_H
 #include<iostream>
-#include"IntelProcessor.h"
+#include "Processor.h"
 
-enum ProcessorType
-{ x86,
-   x64
-};
+using namespace std;
+
 
 class Computer
 {
-   public:
-        IntelProcessor* GetProcessor(double speed, ProcessorType type, string version)
+    IProcessor* processor;
+public:
+    Computer(IProcessor* p)
     {
-       return new IntelProcessor(speed, type, version);
+        processor = p;
     }
+
+    string getProcessor()
+    {
+       return processor->getProcessorInfo();
+    }
+
+
 };
 
 #endif // COMPUTER_H

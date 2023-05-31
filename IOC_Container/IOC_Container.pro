@@ -16,6 +16,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    AMDProcessor.h \
+    AMDProcessor.h \
     Computer.h \
     IOC_Container.h \
-    IntelProcessor.h
+    IntelProcessor.h \
+    Processor.h

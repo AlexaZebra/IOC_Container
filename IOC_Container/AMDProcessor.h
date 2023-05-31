@@ -1,9 +1,9 @@
-#ifndef INTELPROCESSOR_H
-#define INTELPROCESSOR_H
+#ifndef AMDPROCESSOR_H
+#define AMDPROCESSOR_H
 #include"iostream"
 #include"Processor.h"
 
-class IntelProcessor: public IProcessor
+class AMDProcessor: public IProcessor
 {
      std::string Version;
      ProcessorType Type;
@@ -16,13 +16,12 @@ public:
          Speed = new_speed;
      }
 
-     IntelProcessor() = default;
-     ~IntelProcessor() override{};
+     AMDProcessor() = default;
+     ~AMDProcessor() override{};
 
     std::string getProcessorInfo() override{
-        return "Processor Intel version: " + Version + ", type:  " + std::to_string(Type) + ", speed: " + std::to_string(Speed);
+        return "Processor AMD version: " + Version + ", type:  " + std::to_string(Type) + ", speed: " + std::to_string(Speed);
     }
 
  };
-
-#endif // INTELPROCESSOR_H
+#endif // AMDPROCESSOR_H
